@@ -328,3 +328,14 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/PBR_TEST_OLD.rar
+/PBR_TEST.rar
+/cube_map.jpg
+/Libraries
+/PBR/PBR.vcxproj.filters
+/PBR/PBR.vcxproj
+/PBR/imgui.ini
+/Resources
+/PBR_TEST_OLD/Resources
+/PBR_TEST
+/PBR.sln
