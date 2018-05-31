@@ -6,11 +6,6 @@
 class CTexture;
 class CShader;
 
-enum RenderingMode {
-	RM_OPAQUE,
-	RM_TRANSPARENT,
-};
-
 class CRenderable {
 protected:
 	glm::vec3 re_vPosition;
@@ -33,7 +28,7 @@ public:
 	void SetAO(float fAO);
 	void SetTexture(CTexture *ptex);
 	void PreRender(CShader *psh);
-	virtual void Render(CShader *psh, RenderingMode rmMode);
+	virtual void Render(CShader *psh);
 };
 
 #endif // PBR_RENDERABLE_H

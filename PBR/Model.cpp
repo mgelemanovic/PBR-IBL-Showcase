@@ -165,7 +165,7 @@ std::vector<Texture> CModelRenderable::LoadMaterialTextures(aiMaterial *pasMater
 	return atexTextures;
 }
 
-void CModelRenderable::Render(CShader *psh, RenderingMode rmMode)
+void CModelRenderable::Render(CShader *psh)
 {
 	PreRender(psh);
 
@@ -180,10 +180,7 @@ void CModelRenderable::Render(CShader *psh, RenderingMode rmMode)
 	// render every mesh
 	for (GLuint i = 0; i < re_ameMeshes.size(); ++i) {
 		if (i != re_aiSkippedMeshes[iSkip]) {
-			if ((rmMode == RM_OPAQUE && !re_ameMeshes[i]->mesh_pmatMaterial->IsTransparent()) ||
-				(rmMode == RM_TRANSPARENT && re_ameMeshes[i]->mesh_pmatMaterial->IsTransparent())) {
-				re_ameMeshes[i]->Render(psh, !bIsTextured);
-			}
+			re_ameMeshes[i]->Render(psh, !bIsTextured);
 		} else {
 			iSkip = (iSkip + 1) % iSkipCount;
 		}

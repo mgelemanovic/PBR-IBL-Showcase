@@ -19,7 +19,7 @@ public:
 	void ProcessNode(aiNode *pasNode, const aiScene *pasScene);
 	CMesh *ProcessMesh(aiMesh *pasMesh, const aiScene *pasScene);
 	std::vector<Texture> LoadMaterialTextures(aiMaterial *pasMaterial, aiTextureType asType);
-	virtual void Render(CShader *psh, RenderingMode rmMode);
+	virtual void Render(CShader *psh);
 };
 
 #endif // PBR_MODEL_H

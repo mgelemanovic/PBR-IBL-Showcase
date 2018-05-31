@@ -48,12 +48,13 @@ private:
 	std::vector<CRenderable*> gl_apreLoadedModels;
 	std::vector<CLight*> gl_alLights;
 	std::vector<CSkybox*> gl_apsbSkyboxes;
-	int gl_iActiveSkybox;
 
 	GLuint gl_uiBRDF;
 
 	CGLContext();
 public:
+	int gl_iActiveSkybox;
+	int gl_iActiveModel;
 	bool gl_bLightsEnabled;
 	bool gl_bBackgroundEnabled;
 public:

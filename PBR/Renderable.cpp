@@ -71,12 +71,8 @@ void CRenderable::PreRender(CShader *psh)
 	psh->SetMat4("model", mModel);
 }
 
-void CRenderable::Render(CShader *psh, RenderingMode rmMode)
+void CRenderable::Render(CShader *psh)
 {
-	if (rmMode == RM_TRANSPARENT) {
-		return;
-	}
-
 	PreRender(psh);
 
 	bool bIsTextured = re_ptexPBR != nullptr;

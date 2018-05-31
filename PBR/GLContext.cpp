@@ -46,6 +46,7 @@ CGLContext::CGLContext() :
 	gl_pshSkyboxShader = NULL;
 	gl_pcActiveCamera = new CCamera(glm::vec3(1.0, 1.0, 5.0));
 	gl_iActiveSkybox = 0;
+	gl_iActiveModel = 0;
 	gl_bLightsEnabled = true;
 	gl_bBackgroundEnabled = true;
 }
@@ -246,6 +247,10 @@ void CGLContext::ProcessInput(void)
 		std::cout << "LOG: Changing background." << std::endl;
 		gl_iActiveSkybox = (gl_iActiveSkybox + 1) % gl_apsbSkyboxes.size();
 	}
+	if (IsKeyPressed(GLFW_KEY_N)) {
+		std::cout << "LOG: Changing model." << std::endl;
+		gl_iActiveModel = (gl_iActiveModel + 1) % gl_apreLoadedModels.size();
+	}
 
 	// don't allow camera movement while paused
 	if (gl_bPausedSimulation) {
@@ -305,8 +310,8 @@ void CGLContext::RenderScene(void)
 	}
 
 	// render the loaded models
-	for (GLuint i = 0; i < gl_apreLoadedModels.size(); ++i) {
-		gl_apreLoadedModels[i]->Render(gl_pshPBRShader, RM_OPAQUE);
+	if (gl_apreLoadedModels.size() > 0) {
+		gl_apreLoadedModels[gl_iActiveModel]->Render(gl_pshPBRShader);
 	}
 
 	if (gl_bBackgroundEnabled) {
@@ -317,12 +322,6 @@ void CGLContext::RenderScene(void)
 		gl_pshSkyboxShader->SetMat4("view", view);
 		gl_pshSkyboxShader->SetMat4("projection", projection);
 		psb->Render(gl_pshSkyboxShader);
-	}
-
-	gl_pshPBRShader->Use();
-	// render the loaded models
-	for (GLuint i = 0; i < gl_apreLoadedModels.size(); ++i) {
-		gl_apreLoadedModels[i]->Render(gl_pshPBRShader, RM_TRANSPARENT);
 	}
 }
 
