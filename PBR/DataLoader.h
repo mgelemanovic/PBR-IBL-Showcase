@@ -3,7 +3,6 @@
 
 #include <glm/glm.hpp>
 #include <vector>
-#include <fstream>
 #include <string>
 
 class CGLContext;

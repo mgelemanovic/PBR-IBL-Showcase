@@ -3,6 +3,7 @@
 #include "GLContext.h"
 #include "Texture.h"
 #include <iostream>
+#include <fstream>
 
 CTexture* _pbrCreatePBRTexture(const char *strFullPath, const char *strExtension)
 {
@@ -83,7 +84,6 @@ void CDataLoader::Load_Model(std::ifstream &pf)
 			tp.tp_vRotation = _dlGetVector(pf);
 		} else if (strWord.compare("_MATERIAL") == 0) {
 			tp.tp_strMaterialPath = _dlGetText(pf);
-		} else if (strWord.compare("_EXTENSION") == 0) {
 			tp.tp_strMaterialExtension = _dlGetText(pf);
 		} else if (strWord.compare("_PATH") == 0) {
 			tp.tp_strModelPath = _dlGetText(pf);
