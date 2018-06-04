@@ -103,32 +103,6 @@ void CDataLoader::Load_Model(std::ifstream &pf)
 	dl_atpModels.push_back(tp);
 }
 
-void CDataLoader::Load_Sphere(std::ifstream &pf)
-{
-	SphereTemplate tp;
-	tp.tp_vScale = glm::vec3(1.0f);
-	tp.tp_vColor = glm::vec3(1.0f);
-	std::string strWord;
-	while (pf >> strWord) {
-		if (strWord.compare("_POSITION") == 0) {
-			tp.tp_vPosition = _dlGetVector(pf);
-		} else if (strWord.compare("_SCALE") == 0) {
-			tp.tp_vScale = _dlGetVector(pf);
-		} else if (strWord.compare("_ROTATION") == 0) {
-			tp.tp_vRotation = _dlGetVector(pf);
-		} else if (strWord.compare("_MATERIAL") == 0) {
-			tp.tp_strMaterialPath = _dlGetText(pf);
-		} else if (strWord.compare("_EXTENSION") == 0) {
-			tp.tp_strMaterialExtension = _dlGetText(pf);
-		} else if (strWord.compare("_COLOR") == 0) {
-			tp.tp_vColor = _dlGetVector(pf);
-		} else if (strWord.compare("_END") == 0) {
-			break;
-		}
-	}
-	dl_atpSpheres.push_back(tp);
-}
-
 void CDataLoader::Load_Skybox(std::ifstream &pf)
 {
 	SkyboxTemplate tp;
@@ -160,8 +134,6 @@ void CDataLoader::Load(std::string strFilePath)
 			Load_Light(pfFile);
 		} else if (strWord.compare("_MODEL") == 0) {
 			Load_Model(pfFile);
-		} else if (strWord.compare("_SPHERE") == 0) {
-			Load_Sphere(pfFile);
 		} else if (strWord.compare("_HDR") == 0) {
 			Load_Skybox(pfFile);
 		}
@@ -193,25 +165,12 @@ void CDataLoader::Create(CGLContext *pgl)
 		ModelTemplate tp = dl_atpModels[i];
 		CModelRenderable *pre = pgl->AddModel(tp.tp_strModelPath.c_str());
 		CTexture *ptex = _pbrCreatePBRTexture(tp.tp_strMaterialPath.c_str(), tp.tp_strMaterialExtension.c_str());
-		pre->SetPBRTexture(ptex);
-		pre->SetPosition(tp.tp_vPosition);
-		pre->SetScale(tp.tp_vScale);
-		pre->SetRotation(tp.tp_vRotation);
+		pre->re_ptexPBR = ptex;
+		pre->re_vPosition = tp.tp_vPosition;
+		pre->re_vScale = tp.tp_vScale;
+		pre->re_vRotation = tp.tp_vRotation;
 		for (unsigned int j = 0; j < tp.tp_aiSkippedMeshes.size(); ++j) {
 			pre->SkipMesh(tp.tp_aiSkippedMeshes[j]);
 		}
-	}
-
-	unsigned int iSphereCount = dl_atpSpheres.size();
-	std::cout << "LOG: Creating " << iSphereCount << " sphere(s)." << std::endl;
-	for (unsigned int i = 0; i < iSphereCount; ++i) {
-		SphereTemplate tp = dl_atpSpheres[i];
-		CRenderable *pre = pgl->AddSphere();
-		CTexture *ptex = _pbrCreatePBRTexture(tp.tp_strMaterialPath.c_str(), tp.tp_strMaterialExtension.c_str());
-		pre->SetTexture(ptex);
-		pre->SetPosition(tp.tp_vPosition);
-		pre->SetScale(tp.tp_vScale);
-		pre->SetRotation(tp.tp_vRotation);
-		pre->SetColor(tp.tp_vColor);
 	}
 }

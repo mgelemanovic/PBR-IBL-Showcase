@@ -7,7 +7,6 @@
 
 #include "FrameRenderer.h"
 #include "Camera.h"
-#include "Renderable.h"
 #include "Model.h"
 #include "Skybox.h"
 #include "Light.h"
@@ -20,9 +19,7 @@ enum GLContextFlags {
 	GLF_PROCESS_KEYBOARD = (1UL<<1),
 	GLF_PROCESS_MOUSE = (1UL<<2),
 	GLF_FIRST_MOUSE_MOVE = (1UL<<3),
-	GLF_CULL_BACK_FACE = (1UL<<4),
-	GLF_ALPHA_BLENDING = (1ULL<<5),
-	GLF_RENDER_LIGHTS = (1UL<<6),
+	GLF_RENDER_LIGHTS = (1UL<<4),
 };
 
 class CGLContext {
@@ -45,7 +42,7 @@ private:
 	CShader *gl_pshPBRShader;
 	CShader *gl_pshSkyboxShader;
 	CCamera *gl_pcActiveCamera;
-	std::vector<CRenderable*> gl_apreLoadedModels;
+	std::vector<CModelRenderable*> gl_apreLoadedModels;
 	std::vector<CLight*> gl_alLights;
 	std::vector<CSkybox*> gl_apsbSkyboxes;
 
@@ -64,7 +61,6 @@ public:
 	void CreateSkyboxShader(void);
 	void AddLight(glm::vec3 vPosition, glm::vec3 vColor);
 	CModelRenderable *AddModel(const char *strModelPath);
-	CRenderable *AddSphere(void);
 	CSkybox *AddSkybox(std::string strName);
 	void CreateBRDF(void);
 	void Start(void);

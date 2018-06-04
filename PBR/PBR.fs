@@ -5,12 +5,6 @@ in vec3 WorldPos;
 in vec3 Normal;
 
 // material parameters
-uniform vec3 albedoValue;
-uniform float metallicValue;
-uniform float roughnessValue;
-uniform float aoValue;
-
-uniform bool isTextured;
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
 uniform sampler2D metallicMap;
@@ -95,19 +89,11 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 // ----------------------------------------------------------------------------
 void main()
 {
-    vec3 albedo = albedoValue;
-    float metallic = metallicValue;
-    float roughness = roughnessValue;
-    float ao = aoValue;
-    vec3 N = Normal;
-
-	if (isTextured) {
-		albedo = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
-		metallic = texture(metallicMap, TexCoords).r;
-		roughness = texture(roughnessMap, TexCoords).r;
-		ao = texture(aoMap, TexCoords).r;
-		N = getNormalFromMap();
-	}
+    vec3 albedo = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
+    float metallic = texture(metallicMap, TexCoords).r;
+    float roughness = texture(roughnessMap, TexCoords).r;
+    float ao = texture(aoMap, TexCoords).r;
+    vec3 N = getNormalFromMap();
 
     vec3 V = normalize(camPos - WorldPos);
     vec3 R = reflect(-V, N); 

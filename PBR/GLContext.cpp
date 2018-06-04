@@ -93,7 +93,6 @@ void CGLContext::Initialize(int argc, char **argv, const char *strWindowName, un
 		return;
 	}
 
-	CMesh::GenerateEmptyTexture();
 	CSkybox::_pshEquirectangular = new CShader("Cubemap.vs", "EquirectangularToCubemap.fs");
 	CSkybox::_pshIrradiance = new CShader("Cubemap.vs", "IrradianceConvolution.fs");
 	CSkybox::_pshPrefilter = new CShader("Cubemap.vs", "Prefilter.fs");
@@ -103,14 +102,6 @@ void CGLContext::Initialize(int argc, char **argv, const char *strWindowName, un
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-	if (gl_glfContextFlags & GLF_CULL_BACK_FACE) {
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-	}
-	if (gl_glfContextFlags & GLF_ALPHA_BLENDING) {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
 
 	CreatePBRShader();
 	CreateSkyboxShader();
@@ -165,13 +156,6 @@ CModelRenderable *CGLContext::AddModel(const char *strModelPath)
 
 	gl_apreLoadedModels.push_back(pre);
 
-	return pre;
-}
-
-CRenderable *CGLContext::AddSphere(void)
-{
-	CRenderable *pre = new CRenderable();
-	gl_apreLoadedModels.push_back(pre);
 	return pre;
 }
 

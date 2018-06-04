@@ -23,15 +23,6 @@ struct ModelTemplate {
 	std::vector<int> tp_aiSkippedMeshes;
 };
 
-struct SphereTemplate {
-	std::string tp_strMaterialPath;
-	std::string tp_strMaterialExtension;
-	glm::vec3 tp_vPosition;
-	glm::vec3 tp_vScale;
-	glm::vec3 tp_vRotation;
-	glm::vec3 tp_vColor;
-};
-
 struct SkyboxTemplate {
 	std::string tp_strPath;
 	float tp_fExposure;
@@ -41,12 +32,10 @@ class CDataLoader {
 private:
 	std::vector<LightTemplate> dl_atpLights;
 	std::vector<ModelTemplate> dl_atpModels;
-	std::vector<SphereTemplate> dl_atpSpheres;
 	std::vector<SkyboxTemplate> dl_atpSkyboxes;
 private:
 	void Load_Light(std::ifstream &pf);
 	void Load_Model(std::ifstream &pf);
-	void Load_Sphere(std::ifstream &pf);
 	void Load_Skybox(std::ifstream &pf);
 public:
 	CDataLoader();
