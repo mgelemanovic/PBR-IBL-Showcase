@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "GeometryHelper.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
@@ -13,7 +14,9 @@
 CModelRenderable::CModelRenderable(std::string &strPath)
 {
 	re_aiSkippedMeshes.push_back(-1);
-	LoadModel(strPath);
+	if (!strPath.empty()) {
+		LoadModel(strPath);
+	}
 }
 
 void CModelRenderable::SkipMesh(int iIndex)
@@ -116,10 +119,17 @@ void CModelRenderable::Render(CShader *psh)
 
 	re_ptexPBR->Render();
 
+	// render sphere if there are no meshes loaded
+	int iMeshCount = re_ameMeshes.size();
+	if (iMeshCount == 0) {
+		_ghRenderSphere();
+		return;
+	}
+
 	int iSkipCount = re_aiSkippedMeshes.size();
 	int iSkip = iSkipCount > 1 ? 1 : 0;
 	// render every mesh
-	for (GLuint i = 0; i < re_ameMeshes.size(); ++i) {
+	for (GLuint i = 0; i < iMeshCount; ++i) {
 		if (i != re_aiSkippedMeshes[iSkip]) {
 			re_ameMeshes[i]->Render(psh);
 		} else {
