@@ -4,6 +4,12 @@ in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
 
+uniform int renderingMode;
+#define INIT_RENDERING_MODES int currentMode = 1 
+#define OUTPUT_VECTOR2(name, value) if (renderingMode == currentMode) { FragColor = vec4(value, 0.0, 1.0); return; } currentMode++; vec2 name = value
+#define OUTPUT_VECTOR3(name, value) if (renderingMode == currentMode) { FragColor = vec4(value, 1.0); return; } currentMode++; vec3 name = value
+#define OUTPUT_FLOAT(name, value) if (renderingMode == currentMode) { FragColor = vec4(value, value, value, 1.0); return; } currentMode++; float name = value
+
 // material parameters
 uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
@@ -25,9 +31,9 @@ uniform vec3 camPos;
 
 const float PI = 3.14159265359;
 // ----------------------------------------------------------------------------
-vec3 getNormalFromMap()
+vec3 transformNormal(vec3 normal)
 {
-    vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
+    vec3 tangentNormal = normal * 2.0 - 1.0;
 
     vec3 Q1  = dFdx(WorldPos);
     vec3 Q2  = dFdy(WorldPos);
@@ -89,11 +95,19 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 // ----------------------------------------------------------------------------
 void main()
 {
-    vec3 albedo = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
-    float metallic = texture(metallicMap, TexCoords).r;
-    float roughness = texture(roughnessMap, TexCoords).r;
-    float ao = texture(aoMap, TexCoords).r;
-    vec3 N = getNormalFromMap();
+	INIT_RENDERING_MODES;
+	// get albedo value 
+	OUTPUT_VECTOR3(albedo, texture(albedoMap, TexCoords).rgb);
+	albedo = pow(albedo, vec3(2.2));
+	// get normal value
+	OUTPUT_VECTOR3(N, texture(normalMap, TexCoords).xyz);
+    N = transformNormal(N);
+	// get metallic value
+	OUTPUT_FLOAT(metallic, texture(metallicMap, TexCoords).r);
+	// get roughness value
+	OUTPUT_FLOAT(roughness, texture(roughnessMap, TexCoords).r);
+	// get AO value
+	OUTPUT_FLOAT(ao, texture(aoMap, TexCoords).r);
 
     vec3 V = normalize(camPos - WorldPos);
     vec3 R = reflect(-V, N); 
@@ -139,27 +153,27 @@ void main()
 
         // add to outgoing radiance Lo
         Lo += (kD * albedo / PI + specular) * radiance * NdotL; // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
-    }   
+    }
+    OUTPUT_VECTOR3(totalLight, Lo);
     
     // ambient lighting (we now use IBL as the ambient term)
-    vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+	OUTPUT_VECTOR3(F, fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness));
     
     vec3 kS = F;
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;	  
     
-    vec3 irradiance = texture(irradianceMap, N).rgb;
-    vec3 diffuse    = irradiance * albedo;
+    OUTPUT_VECTOR3(irradiance, texture(irradianceMap, N).rgb);
+    OUTPUT_VECTOR3(diffuse, irradiance * albedo);
     
     // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float MAX_REFLECTION_LOD = 4.0;
-    vec3 prefilteredColor = textureLod(prefilterMap, R,  roughness * MAX_REFLECTION_LOD).rgb;
-    vec2 brdf  = texture(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
-    vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+    OUTPUT_VECTOR3(prefilteredColor, textureLod(prefilterMap, R,  roughness * MAX_REFLECTION_LOD).rgb);
+    OUTPUT_VECTOR2(brdf, texture(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg);
+    OUTPUT_VECTOR3(specular, prefilteredColor * (F * brdf.x + brdf.y));
 
-    vec3 ambient = (kD * diffuse + specular) * ao;
-    
-    vec3 color = ambient + Lo;
+    OUTPUT_VECTOR3(ambient, (kD * diffuse + specular) * ao);
+    vec3 color = ambient + totalLight;
 
     // HDR tonemapping
     color = color / (color + vec3(1.0));

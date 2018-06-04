@@ -22,6 +22,11 @@ enum GLContextFlags {
 	GLF_RENDER_LIGHTS = (1UL<<4),
 };
 
+struct RenderingOption {
+	const char *ro_strName;
+	bool ro_bNextLine;
+};
+
 class CGLContext {
 private:
 	GLFWwindow *gl_iWindow;
@@ -52,6 +57,8 @@ private:
 public:
 	int gl_iActiveSkybox;
 	int gl_iActiveModel;
+	int gl_iRenderingMode;
+	std::vector<RenderingOption> gl_aroOptions;
 	bool gl_bLightsEnabled;
 	bool gl_bBackgroundEnabled;
 public:
@@ -59,6 +66,7 @@ public:
 	void Initialize(int argc, char **argv, const char *strWindowName, unsigned long glfFlags);
 	void CreatePBRShader(void);
 	void CreateSkyboxShader(void);
+	void AddRenderingOption(const char *strName, bool bNextLine);
 	void AddLight(glm::vec3 vPosition, glm::vec3 vColor);
 	CModelRenderable *AddModel(const char *strModelPath);
 	CSkybox *AddSkybox(std::string strName);

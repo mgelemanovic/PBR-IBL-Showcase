@@ -20,11 +20,18 @@ void CUserInterface::PreRender(void)
 	ImGui_ImplGlfwGL3_NewFrame();
 	CGLContext *pgl = CGLContext::_glGetContext();
 
-	if (ImGui::CollapsingHeader("Camera", 0, true, true)) {
-		CCamera *pc = pgl->GetActiveCamera();
-		ImGui::Text("Speed : %f", pc->c_fMovementSpeed);
-		ImGui::Text("FOV:"); ImGui::SameLine();
-		ImGui::SliderFloat("", &pc->c_fZoom, 45.0f, 90.0f);
+	if (ImGui::CollapsingHeader("Rendering options", 0, true, true)) {
+		int iActiveRenderingMode = pgl->gl_iRenderingMode;
+		int iModeCount = pgl->gl_aroOptions.size();
+		for (int i = 0; i < iModeCount; ++i) {
+			RenderingOption &ro = pgl->gl_aroOptions[i];
+			if (ImGui::RadioButton(ro.ro_strName, iActiveRenderingMode == i)) {
+				pgl->gl_iRenderingMode = i;
+			}
+			if (i != (iModeCount - 1) && !ro.ro_bNextLine) {
+				ImGui::SameLine();
+			}
+		}
 		if (ImGui::Button("Lights")) {
 			pgl->gl_bLightsEnabled = !pgl->gl_bLightsEnabled;
 		}
@@ -32,6 +39,14 @@ void CUserInterface::PreRender(void)
 		if (ImGui::Button("Background")) {
 			pgl->gl_bBackgroundEnabled = !pgl->gl_bBackgroundEnabled;
 		}
+	}
+
+	if (ImGui::CollapsingHeader("Camera", 0, true, true)) {
+
+		CCamera *pc = pgl->GetActiveCamera();
+		ImGui::Text("Speed: %f", pc->c_fMovementSpeed);
+		ImGui::Text("FOV:"); ImGui::SameLine();
+		ImGui::SliderFloat("", &pc->c_fZoom, 45.0f, 90.0f);
 	}
 
 	if (ImGui::CollapsingHeader("Application Info", 0, true, true)) {

@@ -47,8 +47,11 @@ CGLContext::CGLContext() :
 	gl_pcActiveCamera = new CCamera(glm::vec3(1.0, 1.0, 5.0));
 	gl_iActiveSkybox = 0;
 	gl_iActiveModel = 0;
+	gl_iRenderingMode = 0;
 	gl_bLightsEnabled = true;
 	gl_bBackgroundEnabled = true;
+
+	AddRenderingOption("Default", false);
 }
 
 CGLContext::~CGLContext()
@@ -139,6 +142,14 @@ void CGLContext::CreateSkyboxShader(void)
 
 	gl_pshSkyboxShader->Use();
 	gl_pshSkyboxShader->SetInt("skybox", 0);
+}
+
+void CGLContext::AddRenderingOption(const char *strName, bool bNextLine)
+{
+	RenderingOption ro;
+	ro.ro_strName = strName;
+	ro.ro_bNextLine = bNextLine;
+	gl_aroOptions.push_back(ro);
 }
 
 void CGLContext::AddLight(glm::vec3 vPosition, glm::vec3 vColor)
@@ -276,6 +287,7 @@ void CGLContext::RenderScene(void)
 	gl_pshPBRShader->SetMat4("projection", projection);
 	gl_pshPBRShader->SetMat4("view", view);
 	gl_pshPBRShader->SetVec3("camPos", gl_pcActiveCamera->c_vPosition);
+	gl_pshPBRShader->SetInt("renderingMode", gl_iRenderingMode);
 
 	// setup textures
 	CSkybox *psb = gl_apsbSkyboxes[gl_iActiveSkybox];
