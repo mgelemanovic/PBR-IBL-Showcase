@@ -20,6 +20,42 @@ void CUserInterface::PreRender(void)
 	ImGui_ImplGlfwGL3_NewFrame();
 	CGLContext *pgl = CGLContext::_glGetContext();
 
+	if (ImGui::CollapsingHeader("Rendering data", 0, true, true)) {
+		int iModel = pgl->gl_iActiveModel;
+		int iModelCount = pgl->gl_apreLoadedModels.size();
+		CModelRenderable *pre = pgl->gl_apreLoadedModels[iModel];
+		if (pre->re_strName.empty()) {
+			ImGui::Text("Current model: Sphere %i", iModel);
+		} else {
+			ImGui::Text("Current model: %s", pre->re_strName.c_str());
+		}
+		if (ImGui::Button("Prev Model")) {
+			if (iModel == 0) {
+				iModel = iModelCount;
+			}
+			pgl->gl_iActiveModel = iModel - 1;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Next Model")) {
+			pgl->gl_iActiveModel = (iModel + 1) % iModelCount;
+		}
+
+		int iSkybox = pgl->gl_iActiveSkybox;
+		int iSkyboxCount = pgl->gl_apsbSkyboxes.size();
+		CSkybox *psb = pgl->gl_apsbSkyboxes[iSkybox];
+		ImGui::Text("Current skybox: %s", psb->sb_strName.c_str());
+		if (ImGui::Button("Prev Skybox")) {
+			if (iSkybox == 0) {
+				iSkybox = iSkyboxCount;
+			}
+			pgl->gl_iActiveSkybox = iSkybox - 1;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Next Skybox")) {
+			pgl->gl_iActiveSkybox = (iSkybox + 1) % iSkyboxCount;
+		}
+	}
+
 	if (ImGui::CollapsingHeader("Rendering options", 0, true, true)) {
 		int iActiveRenderingMode = pgl->gl_iRenderingMode;
 		int iModeCount = pgl->gl_aroOptions.size();

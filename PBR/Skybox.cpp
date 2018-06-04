@@ -24,6 +24,8 @@ void CSkybox::Initialize(std::string strSkyboxName)
 {
 	std::cout << "LOG: Loading HDR skybox @" << strSkyboxName << std::endl;
 
+	sb_strName = strSkyboxName.substr(strSkyboxName.find_last_of("\\") + 1, strSkyboxName.length());
+
 	stbi_set_flip_vertically_on_load(true);
 	int width, height, nrComponents;
 	float *data = stbi_loadf(strSkyboxName.c_str(), &width, &height, &nrComponents, 0);

@@ -38,6 +38,8 @@ void CModelRenderable::LoadModel(std::string &strPath)
 		return;
 	}
 
+	re_strName = strPath.substr(strPath.find_last_of("\\") + 1, strPath.length());
+
 	ProcessNode(pasScene->mRootNode, pasScene);
 }
 

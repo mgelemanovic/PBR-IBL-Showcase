@@ -12,6 +12,7 @@ public:
 	GLuint sb_uiIrradianceMap;
 	GLuint sb_uiPrefilterMap;
 	float sb_fExposure;
+	std::string sb_strName;
 public:
 	static CShader *_pshEquirectangular;
 	static CShader *_pshIrradiance;

@@ -47,16 +47,16 @@ private:
 	CShader *gl_pshPBRShader;
 	CShader *gl_pshSkyboxShader;
 	CCamera *gl_pcActiveCamera;
-	std::vector<CModelRenderable*> gl_apreLoadedModels;
 	std::vector<CLight*> gl_alLights;
-	std::vector<CSkybox*> gl_apsbSkyboxes;
 
 	GLuint gl_uiBRDF;
 
 	CGLContext();
 public:
 	int gl_iActiveSkybox;
+	std::vector<CSkybox*> gl_apsbSkyboxes;
 	int gl_iActiveModel;
+	std::vector<CModelRenderable*> gl_apreLoadedModels;
 	int gl_iRenderingMode;
 	std::vector<RenderingOption> gl_aroOptions;
 	bool gl_bLightsEnabled;

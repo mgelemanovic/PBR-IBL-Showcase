@@ -17,6 +17,7 @@ public:
 	// mesh data
 	std::vector<CMesh*> re_ameMeshes;
 	std::vector<int> re_aiSkippedMeshes;
+	std::string re_strName;
 public:
 	CModelRenderable(std::string &strPath);
 	void SkipMesh(int iIndex);
