@@ -15,7 +15,22 @@ _LIGHT
 	_COLOR 300 300 300
 _END
 _HDR
+	_PATH ..\Resources\Textures\HDR\cape_hill_4k.hdr
+_END
+_HDR
+	_PATH ..\Resources\Textures\HDR\cloudy_cliffside_road_4k.hdr
+_END
+_HDR
 	_PATH ..\Resources\Textures\HDR\kiara_1_dawn_4k.hdr
+_END
+_HDR
+	_PATH ..\Resources\Textures\HDR\newport_loft.hdr
+_END
+_HDR
+	_PATH ..\Resources\Textures\HDR\schadowplatz_4k.hdr
+_END
+_HDR
+	_PATH ..\Resources\Textures\HDR\venice_sunset_4k.hdr
 _END
 _HDR
 	_PATH ..\Resources\Textures\HDR\Barce_Rooftop_C_3k.hdr
@@ -37,6 +52,22 @@ _MODEL
 	_POSITION 0 -1 3
 _END
 _MODEL
+	_PATH ..\Resources\Models\Sword\Artorias_Sword.fbx
+	_MATERIAL ..\Resources\Textures\PBR\Sword .jpg
+	_ROTATION 180 90 0
+	_POSITION 0 -12 0
+_END
+_MODEL
+	_PATH ..\Resources\Models\Lantern\lantern_obj.obj
+	_MATERIAL ..\Resources\Textures\PBR\Lantern .jpg
+	_SCALE 0.2 0.2 0.2
+	_POSITION 0 -7 0
+_END
+_MODEL
 	_MATERIAL ..\Resources\Textures\PBR\Gold .png
+	_SCALE 3 3 3
+_END
+_MODEL
+	_MATERIAL ..\Resources\Textures\PBR\Iron .png
 	_SCALE 3 3 3
 _END
