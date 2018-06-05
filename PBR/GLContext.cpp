@@ -50,6 +50,8 @@ CGLContext::CGLContext() :
 	gl_iRenderingMode = 0;
 	gl_bLightsEnabled = true;
 	gl_bBackgroundEnabled = true;
+	gl_fSkyboxExposure = 2.2f;
+	gl_fModelExposure = 2.2f;
 
 	ResetCamera();
 	AddRenderingOption("Default", false);
@@ -197,6 +199,8 @@ void CGLContext::Start(void)
 
 	// ensure proper viewport dimensions
 	ResetViewport();
+	// update skybox exposure to current skybox
+	gl_fSkyboxExposure = gl_apsbSkyboxes[gl_iActiveSkybox]->sb_fExposure;
 
 	while (!glfwWindowShouldClose(gl_iWindow)) {
 		UpdateTime();
@@ -242,10 +246,12 @@ void CGLContext::ProcessInput(void)
 	if (IsKeyPressed(GLFW_KEY_B)) {
 		std::cout << "LOG: Changing background." << std::endl;
 		gl_iActiveSkybox = (gl_iActiveSkybox + 1) % gl_apsbSkyboxes.size();
+		gl_fSkyboxExposure = gl_apsbSkyboxes[gl_iActiveSkybox]->sb_fExposure;
 	}
 	if (IsKeyPressed(GLFW_KEY_N)) {
 		std::cout << "LOG: Changing model." << std::endl;
 		gl_iActiveModel = (gl_iActiveModel + 1) % gl_apreLoadedModels.size();
+		gl_fModelExposure = 2.2f;
 	}
 
 	// don't allow camera movement while paused
@@ -308,6 +314,7 @@ void CGLContext::RenderScene(void)
 
 	// render the loaded models
 	if (gl_apreLoadedModels.size() > 0) {
+		gl_pshPBRShader->SetFloat("exposure", gl_fModelExposure);
 		gl_apreLoadedModels[gl_iActiveModel]->Render(gl_pshPBRShader);
 	}
 
@@ -318,6 +325,7 @@ void CGLContext::RenderScene(void)
 		view = glm::mat4(glm::mat3(gl_pcActiveCamera->GetViewMatrix()));
 		gl_pshSkyboxShader->SetMat4("view", view);
 		gl_pshSkyboxShader->SetMat4("projection", projection);
+		gl_pshSkyboxShader->SetFloat("exposure", gl_fSkyboxExposure);
 		psb->Render(gl_pshSkyboxShader);
 	}
 }

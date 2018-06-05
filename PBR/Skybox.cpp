@@ -82,7 +82,6 @@ void CSkybox::PreRender(void)
 
 void CSkybox::Render(CShader *psh)
 {
-	psh->SetFloat("exposure", sb_fExposure);
 	// change depth function so depth test passes when values are equal to depth buffer's content
 	glDepthFunc(GL_LEQUAL);
 	glActiveTexture(GL_TEXTURE0);
