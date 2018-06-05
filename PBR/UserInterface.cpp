@@ -83,6 +83,9 @@ void CUserInterface::PreRender(void)
 		ImGui::Text("Speed: %f", pc->c_fMovementSpeed);
 		ImGui::Text("FOV:"); ImGui::SameLine();
 		ImGui::SliderFloat("", &pc->c_fZoom, 45.0f, 90.0f);
+		if (ImGui::Button("Reset Camera")) {
+			pgl->ResetCamera();
+		}
 	}
 
 	if (ImGui::CollapsingHeader("Application Info", 0, true, true)) {

@@ -44,13 +44,14 @@ CGLContext::CGLContext() :
 	gl_vLastMousePosition = glm::vec2(GL_WINDOW_WIDTH / 2.0f, GL_WINDOW_HEIGHT / 2.0f);
 	gl_pshPBRShader = NULL;
 	gl_pshSkyboxShader = NULL;
-	gl_pcActiveCamera = new CCamera(glm::vec3(1.0, 1.0, 5.0));
+	gl_pcActiveCamera = NULL;
 	gl_iActiveSkybox = 0;
 	gl_iActiveModel = 0;
 	gl_iRenderingMode = 0;
 	gl_bLightsEnabled = true;
 	gl_bBackgroundEnabled = true;
 
+	ResetCamera();
 	AddRenderingOption("Default", false);
 }
 
@@ -400,6 +401,15 @@ bool CGLContext::IsKeyPressed(int iKey)
 CCamera *CGLContext::GetActiveCamera(void)
 {
 	return gl_pcActiveCamera;
+}
+
+void CGLContext::ResetCamera(void)
+{
+	if (gl_pcActiveCamera != NULL) {
+		delete(gl_pcActiveCamera);
+		gl_pcActiveCamera = NULL;
+	}
+	gl_pcActiveCamera = new CCamera(glm::vec3(1.0, 1.0, 5.0));
 }
 
 CFrameRenderer *CGLContext::GetFrameRenderer(void)

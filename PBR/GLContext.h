@@ -88,6 +88,7 @@ public:
 	bool IsKeyPressed(int iKey);
 
 	CCamera *GetActiveCamera(void);
+	void ResetCamera(void);
 	CFrameRenderer *GetFrameRenderer(void);
 private:
 	static CGLContext *_glContext;
