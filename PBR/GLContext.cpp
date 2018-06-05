@@ -417,7 +417,7 @@ void CGLContext::ResetCamera(void)
 		delete(gl_pcActiveCamera);
 		gl_pcActiveCamera = NULL;
 	}
-	gl_pcActiveCamera = new CCamera(glm::vec3(1.0, 1.0, 5.0));
+	gl_pcActiveCamera = new CCamera(glm::vec3(0.0, 0.0, 20.0));
 }
 
 CFrameRenderer *CGLContext::GetFrameRenderer(void)
