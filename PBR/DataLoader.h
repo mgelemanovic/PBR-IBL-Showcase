@@ -24,7 +24,6 @@ struct ModelTemplate {
 
 struct SkyboxTemplate {
 	std::string tp_strPath;
-	float tp_fExposure;
 };
 
 class CDataLoader {

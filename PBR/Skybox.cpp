@@ -16,7 +16,6 @@ CShader *CSkybox::_pshPrefilter = nullptr;
 
 CSkybox::CSkybox()
 {
-	sb_fExposure = 2.2f;
 }
 
 // use equirectangular HDR map as skybox
@@ -89,9 +88,4 @@ void CSkybox::Render(CShader *psh)
 	_ghRenderCube();
 	// set depth function back to default
 	glDepthFunc(GL_LESS);
-}
-
-void CSkybox::SetExposure(float fExposure)
-{
-	sb_fExposure = fExposure;
 }

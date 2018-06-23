@@ -55,14 +55,13 @@ private:
 public:
 	int gl_iActiveSkybox;
 	std::vector<CSkybox*> gl_apsbSkyboxes;
-	float gl_fSkyboxExposure;
 	int gl_iActiveModel;
 	std::vector<CModelRenderable*> gl_apreLoadedModels;
-	float gl_fModelExposure;
 	int gl_iRenderingMode;
 	std::vector<RenderingOption> gl_aroOptions;
 	bool gl_bLightsEnabled;
 	bool gl_bBackgroundEnabled;
+	float gl_fGamma;
 public:
 	~CGLContext();
 	void Initialize(int argc, char **argv, const char *strWindowName, unsigned long glfFlags);

@@ -11,7 +11,6 @@ public:
 	GLuint sb_iEnvironmentMap;
 	GLuint sb_uiIrradianceMap;
 	GLuint sb_uiPrefilterMap;
-	float sb_fExposure;
 	std::string sb_strName;
 public:
 	static CShader *_pshEquirectangular;
@@ -23,7 +22,6 @@ public:
 	void Initialize(std::string strSkyboxName);
 	void PreRender(void);
 	void Render(CShader *psh);
-	void SetExposure(float fExposure);
 };
 
 #endif

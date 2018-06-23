@@ -29,7 +29,7 @@ uniform int lightCount;
 
 uniform vec3 camPos;
 
-uniform float exposure;
+uniform float gamma;
 
 const float PI = 3.14159265359;
 // ----------------------------------------------------------------------------
@@ -180,7 +180,7 @@ void main()
     // HDR tonemapping
     color = color / (color + vec3(1.0));
     // gamma correct
-    color = pow(color, vec3(1.0/exposure));
+    color = pow(color, vec3(1.0/gamma));
 
     FragColor = vec4(color, 1.0);
 }

@@ -29,36 +29,30 @@ void CUserInterface::PreRender(void)
 		} else {
 			ImGui::Text("Current model: %s", pre->re_strName.c_str());
 		}
-		ImGui::SliderFloat("Model exposure", &pgl->gl_fModelExposure, 1.0f, 4.0f);
 		if (ImGui::Button("Prev Model")) {
 			if (iModel == 0) {
 				iModel = iModelCount;
 			}
 			pgl->gl_iActiveModel = iModel - 1;
-			pgl->gl_fModelExposure = 2.2f;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Next Model")) {
 			pgl->gl_iActiveModel = (iModel + 1) % iModelCount;
-			pgl->gl_fModelExposure = 2.2f;
 		}
 
 		int iSkybox = pgl->gl_iActiveSkybox;
 		int iSkyboxCount = pgl->gl_apsbSkyboxes.size();
 		CSkybox *psb = pgl->gl_apsbSkyboxes[iSkybox];
 		ImGui::Text("Current skybox: %s", psb->sb_strName.c_str());
-		ImGui::SliderFloat("Skybox exposure", &pgl->gl_fSkyboxExposure, 1.0f, 4.0f);
 		if (ImGui::Button("Prev Skybox")) {
 			if (iSkybox == 0) {
 				iSkybox = iSkyboxCount;
 			}
 			pgl->gl_iActiveSkybox = iSkybox - 1;
-			pgl->gl_fSkyboxExposure = pgl->gl_apsbSkyboxes[pgl->gl_iActiveSkybox]->sb_fExposure;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Next Skybox")) {
 			pgl->gl_iActiveSkybox = (iSkybox + 1) % iSkyboxCount;
-			pgl->gl_fSkyboxExposure = pgl->gl_apsbSkyboxes[pgl->gl_iActiveSkybox]->sb_fExposure;
 		}
 	}
 
@@ -87,8 +81,8 @@ void CUserInterface::PreRender(void)
 
 		CCamera *pc = pgl->GetActiveCamera();
 		ImGui::Text("Speed: %f", pc->c_fMovementSpeed);
-		ImGui::Text("FOV:"); ImGui::SameLine();
-		ImGui::SliderFloat("", &pc->c_fZoom, 45.0f, 90.0f);
+		ImGui::SliderFloat("FOV", &pc->c_fZoom, 45.0f, 90.0f);
+		ImGui::SliderFloat("Gamma", &pgl->gl_fGamma, 1.0f, 4.0f);
 		if (ImGui::Button("Reset Camera")) {
 			pgl->ResetCamera();
 		}

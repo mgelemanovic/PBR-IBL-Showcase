@@ -106,13 +106,10 @@ void CDataLoader::Load_Model(std::ifstream &pf)
 void CDataLoader::Load_Skybox(std::ifstream &pf)
 {
 	SkyboxTemplate tp;
-	tp.tp_fExposure = 2.2f;
 	std::string strWord;
 	while (pf >> strWord) {
 		if (strWord.compare("_PATH") == 0) {
 			tp.tp_strPath = _dlGetText(pf);
-		} else if (strWord.compare("_EXPOSURE") == 0) {
-			tp.tp_fExposure = _dlGetNumber(pf);
 		} else if (strWord.compare("_END") == 0) {
 			break;
 		}
@@ -149,7 +146,6 @@ void CDataLoader::Create(CGLContext *pgl)
 	for (unsigned int i = 0; i < iSkyboxCount; ++i) {
 		SkyboxTemplate tp = dl_atpSkyboxes[i];
 		CSkybox *psb = pgl->AddSkybox(tp.tp_strPath);
-		psb->SetExposure(tp.tp_fExposure);
 	}
 
 	unsigned int iLightCount = dl_atpLights.size();
